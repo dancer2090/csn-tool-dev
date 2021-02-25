@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import PopupTable from 'components/common/PopupTable';
 
 // Filters only for columns a, b and c
 const PROTECTION_HIERARCHY_FILTER = 'abc';
@@ -256,6 +257,17 @@ class TableListHeader extends React.Component {
       blockChildren.push(this.renderSort(column));
     }
 
+    if (this.props.showPopup) {
+      const title = this.context.t(column);
+      return (
+        <PopupTable
+          title={title}
+          position={this.props.popupPosition}
+        >
+          {blockChildren}
+        </PopupTable>
+      );
+    }
     return blockChildren;
   }
 
@@ -309,8 +321,23 @@ class TableListHeader extends React.Component {
             style.display = 'block';
             style.paddingRight = 0;
 
+            const { handleClickTitle } = this.props;
             columnInner = [
-              <div key={`${index}Overheader`} className="overheader">{item.title}</div>,
+              <div
+                key={`${index}Overheader`}
+                className="overheader"
+                onClick={handleClickTitle && handleClickTitle}
+              >
+                {
+                  this.props.showPopup
+                    ? (
+                      <PopupTable title={item.title} position={this.props.popupPosition}>
+                        {item.title}
+                      </PopupTable>
+                    )
+                    : item.title
+                }
+              </div>,
               <div key={`${index}OverheaderCols`}>{item.columns.map((col) =>
                 this.renderHeaderColumn({
                   children: this.renderHeaderColumnInner(col),
@@ -334,9 +361,9 @@ class TableListHeader extends React.Component {
             })
           );
         })
-      }
+        }
 
-      {this.props.detailLink &&
+        {this.props.detailLink &&
         <div className="text -title link" style={{ width: `${DETAIL_LINK_WIDTH_PERCENT}%` }}>
           <div className="dropdown">
             <div className="dropbtn">...</div>
@@ -361,7 +388,8 @@ class TableListHeader extends React.Component {
                             </svg>
                           </div>
                         </div>
-                      ); })
+                      );
+                    })
                     }
                   </div>
                 ))
@@ -369,7 +397,7 @@ class TableListHeader extends React.Component {
             </div>
           </div>
         </div>
-      }
+        }
       </li>
     );
 
@@ -383,7 +411,9 @@ TableListHeader.contextTypes = {
 };
 
 TableListHeader.defaultProps = {
-  includeSort: true
+  includeSort: true,
+  showPopup: false,
+  popupPosition: 'left'
 };
 
 TableListHeader.propTypes = {
@@ -396,7 +426,9 @@ TableListHeader.propTypes = {
   includeSort: PropTypes.bool,
   sort: PropTypes.object,
   sortBy: PropTypes.func.isRequired,
-  filterBy: PropTypes.func
+  filterBy: PropTypes.func,
+  showPopup: PropTypes.bool,
+  popupPosition: PropTypes.string
 };
 
 export default TableListHeader;

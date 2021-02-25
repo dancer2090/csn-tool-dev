@@ -47,3 +47,11 @@ a {
   text-decoration: none;
 }
 
+body {
+  &.ReactModal__Body--open {
+    .ReactModal__Overlay {
+      z-index: 401;
+      background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+  }
+}
