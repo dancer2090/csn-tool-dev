@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PopupTable from 'components/common/PopupTable';
+import ModalPopup from '../common/Popup';
 
 // Filters only for columns a, b and c
 const PROTECTION_HIERARCHY_FILTER = 'abc';
@@ -128,11 +128,20 @@ class TableListHeader extends React.Component {
     this.filters = null;
     this.activeFilters = {};
     this.hasProducedFilters = false;
+    this.state = {
+      modalOpen: false,
+      modalTitle: '',
+      modalDescription: '',
+    };
 
     if (props.data && props.data.length > 0) {
       this.filters = getFilters(props.columns, props.data);
       this.hasProducedFilters = true;
     }
+  }
+
+  handlerPopup = () => {
+    this.setState({ modalOpen: !this.state.modalOpen });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -203,12 +212,29 @@ class TableListHeader extends React.Component {
   }
 
   renderHeaderColumn({ children, index, colWidth, extraClass, column, style }) {
+    const handlerPopup = () => {
+      if (typeof column === 'string') {
+        this.setState({
+          modalTitle: this.context.t(column),
+          modalDescription: this.context.t(`${column}_descr`),
+          modalOpen: !this.state.modalOpen,
+        });
+      } else {
+        this.setState({
+          modalTitle: this.context.t('AEWA Table 1 Column'),
+          modalDescription: this.context.t(`AEWA Table 1 Column`),
+          modalOpen: !this.state.modalOpen,
+        });
+      }
+    }
+
     return (
       <div
         key={index}
-        className={`text -title ${extraClass}`}
+        className={`text -title popup ${extraClass}`}
         style={{ width: `${colWidth}%`, ...style }}
         title={column && getTitle(column)}
+        onClick={handlerPopup}
       >
         {children}
       </div>
@@ -257,17 +283,6 @@ class TableListHeader extends React.Component {
       blockChildren.push(this.renderSort(column));
     }
 
-    if (this.props.showPopup) {
-      const title = this.context.t(column);
-      return (
-        <PopupTable
-          title={title}
-          position={this.props.popupPosition}
-        >
-          {blockChildren}
-        </PopupTable>
-      );
-    }
     return blockChildren;
   }
 
@@ -309,6 +324,12 @@ class TableListHeader extends React.Component {
 
     const header = (
       <li className="header">
+        <ModalPopup
+          onRequestClose={this.handlerPopup}
+          isOpen={this.state.modalOpen}
+          title={this.state.modalTitle}
+          description={this.state.modalDescription}
+        />
         {columnChunks.map((item, index) => {
           let columnInner = null;
           let thisColWidth = colWidth;
@@ -321,22 +342,12 @@ class TableListHeader extends React.Component {
             style.display = 'block';
             style.paddingRight = 0;
 
-            const { handleClickTitle } = this.props;
             columnInner = [
               <div
                 key={`${index}Overheader`}
                 className="overheader"
-                onClick={handleClickTitle && handleClickTitle}
               >
-                {
-                  this.props.showPopup
-                    ? (
-                      <PopupTable title={item.title} position={this.props.popupPosition}>
-                        {item.title}
-                      </PopupTable>
-                    )
-                    : item.title
-                }
+                {item.title}
               </div>,
               <div key={`${index}OverheaderCols`}>{item.columns.map((col) =>
                 this.renderHeaderColumn({

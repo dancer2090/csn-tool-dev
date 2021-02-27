@@ -8,7 +8,6 @@ import SpeciesDetailFilters from 'components/species/SpeciesDetailFilters';
 import SpeciesPopulationHeader from 'components/species/SpeciesPopulationHeader';
 import TableList from 'components/tables/TableList';
 import TableListHeader from 'containers/species/TableListHeader';
-import ModalPopup from 'components/common/Popup';
 
 class SpeciesDetailTable extends React.Component {
   constructor(props) {
@@ -67,10 +66,6 @@ class SpeciesDetailTable extends React.Component {
   }
 
   renderTableHeader(isExpanded, data, columns, allColumns) {
-    const clickTitle = () => {
-      console.log('123123');
-    };
-
     return (
       <div>
         <SpeciesDetailFilters
@@ -85,10 +80,7 @@ class SpeciesDetailTable extends React.Component {
           columns={columns}
           allColumns={allColumns}
           detailLink
-          handleClickTitle={clickTitle}
         />
-
-        <ModalPopup title="title" description="Description" />
       </div>
     );
   }

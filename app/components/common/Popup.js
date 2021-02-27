@@ -10,17 +10,19 @@ const customStyles = {
     marginRight: '-50%',
     zIndex: 401,
     transform: 'translate(-50%, -50%)',
-    padding: '10px 20px'
+    padding: '10px 20px',
+    background: '#fff',
+  },
+  overlay: {
+    overflow: 'hidden',
   }
 };
+
+Modal.setAppElement('#app');
 
 class ModalPopup extends PureComponent {
   constructor(props) {
     super(props);
-    const { show = false } = this.props;
-    this.state = {
-      modalIsOpen: show
-    };
   }
 
   renderDefaultContent(title, description) {
@@ -37,21 +39,19 @@ class ModalPopup extends PureComponent {
   }
 
   render() {
-    const { children, title, description } = this.props;
+    const { title, description } = this.props;
     return (
-      <div>
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-          {
-            children
-              ? { children }
-              : this.renderDefaultContent(title, description)
-          }
-        </Modal>
-      </div>
+      <Modal
+        {...this.props}
+        style={customStyles}
+        contentLabel="Table Header Modal"
+        shouldCloseOnOverlayClick={true}
+        preventScroll={true}
+        ariaHideApp={true}
+        bodyOpenClassName="body-open"
+      >
+        {this.renderDefaultContent(title, description)}
+      </Modal>
     );
   }
 }
