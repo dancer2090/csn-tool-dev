@@ -236,6 +236,19 @@ class TableListHeader extends React.Component {
         title={column && getTitle(column)}
         onClick={handlerPopup}
       >
+        {typeof column === 'string' ? (
+          <span className="popup">
+            <div className="popup-content">
+                <h3 className="popup-content-title">
+                  {this.context.t(column)}
+                </h3>
+                <div className="popup-content-description">
+                  {this.context.t(`${column}_descr`)}
+                </div>
+            </div>
+          </span>
+          ) : null
+        }
         {children}
       </div>
     );
@@ -347,6 +360,16 @@ class TableListHeader extends React.Component {
                 key={`${index}Overheader`}
                 className="overheader"
               >
+                <span className="popup">
+                  <div className="popup-content">
+                      <h3 className="popup-content-title">
+                        {item.title}
+                      </h3>
+                      <div className="popup-content-description">
+                        {this.context.t(`AEWA Table 1 Column`)}
+                      </div>
+                  </div>
+                </span>
                 {item.title}
               </div>,
               <div key={`${index}OverheaderCols`}>{item.columns.map((col) =>
