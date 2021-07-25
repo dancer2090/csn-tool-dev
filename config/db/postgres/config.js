@@ -1,11 +1,9 @@
+/* eslint camelcase:0 */
 require('dotenv').config({ silent: true });
 /*
 	Databse configs will placed here
 	We can change db config by POSTGRES_DB_ENV
  */
-
-  console.log(process.env.POSTGRES_DB_HOST);
-
 module.exports = {
   DEV: {
     username: process.env.POSTGRES_DB_USER,
@@ -13,7 +11,7 @@ module.exports = {
     database: process.env.POSTGRES_DB_NAME,
     host: process.env.POSTGRES_DB_HOST,
     port: process.env.POSTGRES_DB_PORT,
-    dialect: "postgres",
+    dialect: 'postgres',
     ssl: false,
     logging: true,
     dialectOptions: {
@@ -29,7 +27,7 @@ module.exports = {
     database: process.env.POSTGRES_DB_NAME,
     host: process.env.POSTGRES_DB_HOST,
     port: process.env.POSTGRES_DB_PORT,
-    dialect: "postgres",
+    dialect: 'postgres',
     ssl: false,
     logging: true,
     dialectOptions: {
@@ -38,5 +36,5 @@ module.exports = {
         rejectUnauthorized: false // <<<<<< YOU NEED THIS
       }
     }
-  },
+  }
 };
