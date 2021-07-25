@@ -85,7 +85,10 @@ class PopulationMap extends BasicMap {
       return;
     }
 
+    console.log('aewa', data);
     const geom = JSON.parse(data.rows[0].geom);
+    console.log('aewa geom', geom);
+
     const layer = L.geoJSON(geom, {
       noWrap: true,
       style: SELECTED_AEWA_STYLE
@@ -97,13 +100,10 @@ class PopulationMap extends BasicMap {
 
   setBirdLifeLayer() {
     if (!this.selectedBirdLifeLayer) {
-/*      const query = `
-         SELECT ST_AsGeoJSON(the_geom, 15, 1) as geom
-         FROM aewa_extent_geo LIMIT 1
-       `; // asGeoJSON with options - add bbox for fitBound
-      getSqlQuery(query)
-        .then(this.addAewaLayer.bind(this));*/
-      const url = `${config.apiHost}/birdlife/shape`;
+       
+      // asGeoJSON with options - add bbox for fitBound
+      const species_id = '22679814';
+      const url = `${config.apiHost}/birdlife/${species_id}`;
       fetch(url)
       .then(response => response.json())
       .then(this.addBirdLifeLayer.bind(this));
@@ -114,22 +114,18 @@ class PopulationMap extends BasicMap {
   }
 
   addBirdLifeLayer(data) {
-    // layer not found, just set map view on selectedSite with default zoom
-    /*if (!data.length) {
-      this.map.setView([this.props.selectedSite.lat, this.props.selectedSite.lon], 8);
-      return;
-    }*/
-    //const geom = JSON.parse(data.rows[0].geom);
+    console.log('birdlife', data);
 
-    const geom = data;
-
-    const layer = L.geoJSON(geom, {
-      noWrap: true,
-      style: SELECTED_BIRDLIFE_STYLE
-    });
-    layer.addTo(this.map);
-    layer.bringToBack();
-    this.selectedBirdLifeLayer = layer;
+    data.rows.map(d => {
+      const geom = d;
+      const layer = L.geoJSON(geom, {
+        noWrap: true,
+        style: SELECTED_BIRDLIFE_STYLE,
+      });
+      layer.addTo(this.map);
+      layer.bringToBack();
+      this.selectedBirdLifeLayer = layer;
+    })
   }
 
   setPopulationColors(populations) {

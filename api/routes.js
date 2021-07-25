@@ -18,6 +18,9 @@ router.route('/carto/populations').get(TablesCtrl.importTrendSizeMethods);
 
 // Birdlife
 router.route('/birdlife/shape').get(BirdlifeCtrl.getBirdlifeShape);
+// router.route('/birdlife/test').get(BirdlifeCtrl.test);
+// router.route('/birdlife/add').get(BirdlifeCtrl.addBirdlifeData);
+router.route('/birdlife/:id').get(BirdlifeCtrl.getBirdlifeBySpeciesId);
 
 // Countries
 router.route('/countries').get(CountriesCtrl.getCountries);
