@@ -1,16 +1,16 @@
-const { Sequelize } = require("sequelize");
+/* eslint-disable */
+const { Sequelize } = require('sequelize');
 
 const { literal, Op, fn, col, where } = Sequelize;
 const env = process.env.POSTGRES_DB_ENV;
-const config = require("../../../config/db/postgres/config")[env];
+const configuration = require('../../../config/db/postgres/config')[env];
 
-const createConnection = (config) =>{
-  console.log("createConnection is called");
+const createConnection = (config) => {
   const dialectOptions = {
     connectTimeout: 6000000,
     ssl: {
       require: config.ssl,
-      rejectUnauthorized: false,
+      rejectUnauthorized: false
     }
   };
 
@@ -31,26 +31,23 @@ const createConnection = (config) =>{
         max: 1,
         min: 1,
         idle: 100000,
-        acquire: 200000,
+        acquire: 200000
       }
     }
   );
 
   connection.authenticate().then(() => {
-    console.log("Connection has been established successfully.");
+    console.log('Connection has been established successfully.');
   }).catch(err => {
-    console.error("Unable to connect to the database:", err);
+    console.error('Unable to connect to the database:', err);
   });
 
   return connection;
-
 };
 
-const sequelize = createConnection(config);
+const sequelize = createConnection(configuration);
 
-const connect = (config) => {
-  return createConnection(config);
-};
+const connect = (config) => createConnection(config);
 
 module.exports = {
   sequelize,

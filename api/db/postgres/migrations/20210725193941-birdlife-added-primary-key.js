@@ -1,15 +1,11 @@
-'use strict';
+
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    return queryInterface.addColumn('birdlife', 'id', {
-      type: Sequelize.DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    })
-  },
+  up: async (queryInterface, Sequelize) => queryInterface.addColumn('birdlife', 'id', {
+    type: Sequelize.DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  }),
 
-  down: async (queryInterface, Sequelize) => {
-    return queryInterface.removeColumn('birdlife', 'id');
-  }
+  down: async (queryInterface) => queryInterface.removeColumn('birdlife', 'id')
 };

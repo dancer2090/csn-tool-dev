@@ -1,13 +1,9 @@
-'use strict';
+
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    return queryInterface.addColumn('birdlife', 'geometry', {
-      type: Sequelize.DataTypes.GEOMETRY
-    })
-  },
+  up: async (queryInterface, Sequelize) => queryInterface.addColumn('birdlife', 'geometry', {
+    type: Sequelize.DataTypes.GEOMETRY
+  }),
 
-  down: async (queryInterface, Sequelize) => {
-    return queryInterface.removeColumn('birdlife', 'geometry');
-  }
+  down: async (queryInterface) => queryInterface.removeColumn('birdlife', 'geometry')
 };

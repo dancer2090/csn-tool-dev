@@ -1,9 +1,7 @@
 const fs = require('fs');
 const bbox = require('geojson-bbox');
 const shapefile = require('shapefile-stream');
-const through = require('through2');
-const { sequelize } = require('../db/postgres');
-const { BirdLife } = require('../db/postgres/models');
+const through = require('through2'); const { BirdLife } = require('../db/postgres/models');
 
 
 async function getBirdlifeBySpeciesId(req, res) {
@@ -30,9 +28,7 @@ async function getBirdlifeBySpeciesId(req, res) {
     });
 
     res.status(200).json({ rows });
-
   } catch (err) {
-    console.log(err);
     res.status(err.statusCode || 500);
     res.json({ error: err.message });
   }
@@ -61,27 +57,11 @@ function getBirdlifeShape(req, res) {
   }
 }
 
-async function test (req, res) {
-  try {
-    
-    console.log('start birdlife')
-    // await BirdLife.create({ type: 'hello' });
-    console.log('end birdlife')
-    res.json({
-      status: 'success',
-    });
-  } catch (err) {
-    res.status(err.statusCode || 500);
-    res.json({ error: err.message });
-  }
-}
-
-async function addBirdlifeData (req, res) {
+async function addBirdlifeData(req, res) {
   try {
     let n = 0;
-    shapefile.createReadStream( 'SpeciesRequest.shp' )
-      .pipe( through.obj( async function( data, enc, next ){
-        console.log(data);
+    shapefile.createReadStream('SpeciesRequest.shp')
+      .pipe(through.obj(async (data, enc, next) => {
         if (n >= 5) {
           await BirdLife.create({
             type: data.type,
@@ -97,14 +77,14 @@ async function addBirdlifeData (req, res) {
             source: data.properties.source,
             dist_comm: data.properties.dist_comm,
             version: data.properties.version,
-            geometry: data.geometry,
-          })
+            geometry: data.geometry
+          });
         }
         n++;
         next();
-      }))
+      }));
     res.json({
-      status: 'success',
+      status: 'success'
     });
   } catch (err) {
     res.status(err.statusCode || 500);
@@ -115,6 +95,5 @@ async function addBirdlifeData (req, res) {
 module.exports = {
   getBirdlifeBySpeciesId,
   getBirdlifeShape,
-  addBirdlifeData,
-  test,
+  addBirdlifeData
 };
