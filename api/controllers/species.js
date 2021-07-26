@@ -2,6 +2,8 @@ const fs = require('fs');
 const normalizeSiteStatus = require('../helpers/index').normalizeSiteStatus;
 const mergeNames = require('../helpers/index').mergeNames;
 const { runQuery, saveFileSync, getQueryString } = require('../helpers');
+const { BirdLife } = require('../db/postgres/models');
+const bbox = require('geojson-bbox');
 
 function getSpeciesList(req, res) {
   const queryStr = getQueryString(req.query);
@@ -501,6 +503,38 @@ function getSpeciesSeasons(req, res) {
   }
 }
 
+async function getSpeciesBirdlife (req, res) {
+  try {
+    const { id } = req.params;
+    const polygons = await BirdLife.findAll({ where: { sis_id: id } });
+    if (!polygons) {
+      throw new Error('have filter');
+    }
+    const rows = polygons.map(p => {
+      const feature = {
+        type: 'Feature',
+        geometry: p.geometry
+      };
+      const extent = bbox(feature);
+      const resGeometry = {
+        id: p.id,
+        citation: p.citation,
+        source: p.source,
+        ...p.geometry,
+        ...{
+          bbox: extent
+        }
+      };
+      return resGeometry;
+    });
+
+    res.status(200).json({ rows });
+  } catch (err) {
+    res.status(err.statusCode || 500);
+    res.json({ error: err.message });
+  }
+}
+
 module.exports = {
   getSpeciesList,
   getSpeciesDetails,
@@ -511,5 +545,6 @@ module.exports = {
   getSpeciesLookAlikeSpecies,
   getPopulationsLookAlikeSpecies,
   getPopulationVulnerability,
-  getTriggerCriticalSitesSuitability
+  getTriggerCriticalSitesSuitability,
+  getSpeciesBirdlife,
 };

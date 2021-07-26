@@ -68,6 +68,7 @@ function renderItems(items, onHover) {
             [`-${item.icon}`]: item.icon,
             [`-${item.status}`]: item.status
           })}
+          style={ item.color ? { backgroundColor: item.color } : {}}
         />
       )}
       <p>{item.name}</p>

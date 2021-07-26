@@ -16,13 +16,15 @@ const getPopulations = createSelector(
   (species) => species.population,
   (species) => species.selected,
   (species) => species.selectedTableItem,
-  (selectedLASpeciesPopulation, population, selected, selectedTableItem) => {
+  (species) => species.birdlife,
+  (selectedLASpeciesPopulation, population, selected, selectedTableItem, birdlife) => {
     const selectedALikeSpecies = selectedTableItem;
 
     if (!selectedLASpeciesPopulation) {
       return {
         populations: population[selected],
-        fitToPopulationId: null
+        fitToPopulationId: null,
+        birdlife
       };
     }
 
@@ -40,13 +42,15 @@ const getPopulations = createSelector(
 
     return {
       populations: results,
-      fitToPopulationId: results.slice(-1)[0].wpepopid
+      fitToPopulationId: results.slice(-1)[0].wpepopid,
+      birdlife,
     };
   }
 );
 
 const mapStateToProps = ({ species }) => {
   const {
+    birdlife,
     populations,
     fitToPopulationId
   } = getPopulations(species);
@@ -58,6 +62,7 @@ const mapStateToProps = ({ species }) => {
     id: species.selected,
     sites: sites || false,
     populations: populations || false,
+    birdlife: birdlife || false,
     selectedPopulationId: species.highlightedPopulationId,
     fitToPopulationBoudaries: !species.selectedLASpeciesPopulation,
     fitToPopulationId,

@@ -41,6 +41,20 @@ export const BOUNDARY_COLORS = [
   '#ffff99'
 ];
 
+export const BIRDLIFE_COLORS = [
+  '#a6cee3',
+  '#1f78b4',
+  '#b2df8a',
+  '#33a02c',
+  '#fb9a99',
+  '#e31a1c',
+  '#fdbf6f',
+  '#ff7f00',
+  '#cab2d6',
+  '#6a3d9a',
+  '#ffff99'
+];
+
 // aewa styles
 export const SELECTED_AEWA_STYLE = {
   opacity: 0.5,
@@ -54,13 +68,18 @@ export const SELECTED_AEWA_STYLE = {
 };
 
 export const SELECTED_BIRDLIFE_STYLE = {
-  opacity: 0.5,
+  opacity: 0.8,
   weight: 0,
   dashArray: [1, 7],
   lineCap: 'round',
   color: 'white',
   fill: true,
-  fillOpacity: 0.8,
+  fillOpacity: 0.5,
   fillColor: '#ff0000'
 };
 
+export const getBirdLifeStyle = (n) => {
+  const style = SELECTED_BIRDLIFE_STYLE;
+  style.fillColor = BIRDLIFE_COLORS[n];
+  return style;
+};

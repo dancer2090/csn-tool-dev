@@ -15,10 +15,12 @@ import {
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_PARAMS,
   SET_SPECIES_SEASONS,
+  SET_SPECIES_BIRDLIFE,
   TOGGLE_SPECIES_LAYER,
   TOGGLE_SPECIES_LEGEND_ITEM
 } from 'constants/action-types';
 import { TABLES } from 'constants/tables';
+import { getBirdLifeStyle } from 'constants/map';
 
 export function getSpeciesStats(id) {
   const url = `${config.apiHost}/species/${id}`;
@@ -206,6 +208,23 @@ export function getSpeciesSeasons(id) {
         dispatch({
           type: SET_SPECIES_SEASONS,
           payload: data
+        });
+      });
+  };
+}
+
+export function getSpeciesBirdfile(id) {
+  const url = `${config.apiHost}/species/${id}/birdlife`;
+  return (dispatch) => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: SET_SPECIES_BIRDLIFE,
+          payload: data.rows.map((r, n) => {
+            r.color = getBirdLifeStyle(n).fillColor;
+            return r;
+          })
         });
       });
   };

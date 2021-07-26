@@ -1,5 +1,5 @@
 import { uniqueBy } from 'helpers/data';
- 
+
 const PROTECTION_LEVELS_ORDER = ['Little/none', 'Some', 'Most', 'Whole', 'Unknown'];
 const HYDROLOGY_SECTIONS = [
   /*{
@@ -354,15 +354,31 @@ export function getAewaSections(layers) {
   ];
 }
 
-export function getBirdlifeSections(layers) {
+export function getBirdlifeSections(layers, birdlife, selected) {
+
   const activeLayer = Object.keys(layers).filter(key => layers[key] && key === 'birdLife')[0];
-  return [
-    {
-      active: layers[activeLayer],
-      layer: 'birdLife',
-      name: 'Bird Life'
-    }
-  ];
+
+  let items = []
+  if (birdlife) {
+    items = (birdlife || []).map((l, n) => ({
+      icon: 'circle',
+      id: l.id,
+      name: l.source  ,
+      color: l.color,
+    }));
+  }
+
+  if (selected) {
+    return [
+      {
+        active: layers[activeLayer],
+        layer: 'birdLife',
+        name: 'Bird Life',
+        items,
+      }
+    ];
+  }
+  return {};
 }
 
 export function getSitesSections(state) {
@@ -388,7 +404,6 @@ export function getLegendData(state, { populations, populationColors }) {
   // if(showCLimateLay
   legend.push(getPopulationsLegendSection(populations, populationColors, state.layers.population));
   legend.push(...getHydrologySections(state.layers));
-  // console.log(state.layers);
   if (state.layers.hasOwnProperty('aewaExtent')) {
     legend.push(...getAewaSections(state.layers));
   }
@@ -396,7 +411,7 @@ export function getLegendData(state, { populations, populationColors }) {
 
   //BirdLife
   if (state.layers.hasOwnProperty('birdLife')) {
-    legend.push(...getBirdlifeSections(state.layers));
+    legend.push(...getBirdlifeSections(state.layers, state.birdlife,  state.selected));
   }
 
   if (showClimateLayers) {

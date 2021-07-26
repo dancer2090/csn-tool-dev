@@ -17,10 +17,10 @@ router.route('/locales/import-from-sheet').get(TablesCtrl.importFromSheet);
 router.route('/carto/populations').get(TablesCtrl.importTrendSizeMethods);
 
 // Birdlife
-router.route('/birdlife/shape').get(BirdlifeCtrl.getBirdlifeShape);
+// router.route('/birdlife/shape').get(BirdlifeCtrl.getBirdlifeShape);
 // router.route('/birdlife/test').get(BirdlifeCtrl.test);
 // router.route('/birdlife/add').get(BirdlifeCtrl.addBirdlifeData);
-router.route('/birdlife/:id').get(BirdlifeCtrl.getBirdlifeBySpeciesId);
+// router.route('/birdlife/:id').get(BirdlifeCtrl.getBirdlifeBySpeciesId);
 
 // Countries
 router.route('/countries').get(CountriesCtrl.getCountries);
@@ -49,6 +49,7 @@ router.route('/species/:id/sites').get(SpeciesCtrl.getSpeciesSites);
 router.route('/species/:id/seasons').get(SpeciesCtrl.getSpeciesSeasons);
 router.route('/species/:id/criticalSites').get(SpeciesCtrl.getSpeciesCriticalSites);
 router.route('/species/:id/population').get(SpeciesCtrl.getSpeciesPopulation);
+router.route('/species/:id/birdlife').get(SpeciesCtrl.getSpeciesBirdlife);
 router.route('/species/:id/look-alike-species').get(SpeciesCtrl.getSpeciesLookAlikeSpecies);
 router.route('/species/:id/look-alike-species/:populationId').get(SpeciesCtrl.getPopulationsLookAlikeSpecies);
 router.route('/species/:id/population-vulnerability').get(SpeciesCtrl.getPopulationVulnerability);

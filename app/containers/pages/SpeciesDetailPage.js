@@ -8,7 +8,8 @@ import {
   getSpeciesLookAlikeSpecies,
   getSpeciesLookAlikeSpeciesPopulation,
   getSpeciesPopulationVulnerability,
-  getTriggerCriticalSuitability
+  getTriggerCriticalSuitability,
+  getSpeciesBirdfile,
 } from 'actions/species';
 
 function getSpeciesData(species) {
@@ -25,10 +26,12 @@ const mapStateToProps = (state) => ({
   category: state.species.selectedCategory,
   stats: state.species.stats || false,
   data: getSpeciesData(state.species),
-  lang: state.i18nState.lang
+  lang: state.i18nState.lang,
+  layers: state.species.layers,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  getSpeciesBirdfile: id => dispatch(getSpeciesBirdfile(id)),
   getSpeciesStats: id => dispatch(getSpeciesStats(id)),
   getSpeciesData: (id, category, populationId) => {
     switch (category) {

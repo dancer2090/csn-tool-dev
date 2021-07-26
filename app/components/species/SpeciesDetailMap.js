@@ -84,13 +84,14 @@ class SpeciesMap extends ClimateMap {
         populations={this.props.populations}
         populationColors={this.populationColors}
       />
-    );
+   );
   }
 }
 
 SpeciesMap.propTypes = {
   ...ClimateMap.propTypes,
-  sites: PropTypes.any.isRequired
+  sites: PropTypes.any.isRequired,
+  birdlife: PropTypes.any,
 };
 
 export default withRouter(SpeciesMap);

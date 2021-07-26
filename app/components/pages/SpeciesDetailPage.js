@@ -13,6 +13,15 @@ class SpeciesDetailPage extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.layers.hasOwnProperty('birdLife') && prevProps.layers.birdLife !== this.props.layers.birdLife) {
+      this.props.getSpeciesBirdfile(this.props.id);
+    }
+    if (prevProps.id !== this.props.id && this.props.layers.birdLife) {
+      this.props.getSpeciesBirdfile(this.props.id);
+    }
+  }
+
   componentWillReceiveProps(newProps) {
     if (newProps.id !== this.props.id) {
       this.getInitialData(newProps.id);
@@ -28,6 +37,9 @@ class SpeciesDetailPage extends React.Component {
     // Sites and populations always needed in the map
     this.props.getSpeciesData(speciesId, 'sites');
     this.props.getSpeciesData(speciesId, 'population');
+    if (this.props.layers && this.props.layers.birdLife) {
+      this.props.getSpeciesBirdfile(speciesId);
+    }
   }
 
   hasNewParams(newProps) {
@@ -115,10 +127,12 @@ SpeciesDetailPage.propTypes = {
   category: PropTypes.string.isRequired,
   getSpeciesStats: PropTypes.func.isRequired,
   getSpeciesData: PropTypes.func.isRequired,
+  getSpeciesBirdfile: PropTypes.func.isRequired,
   stats: PropTypes.any.isRequired,
   data: PropTypes.any,
   params: PropTypes.object,
-  lang: PropTypes.string
+  lang: PropTypes.string,
+  layers: PropTypes.any,
 };
 
 export default SpeciesDetailPage;

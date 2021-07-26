@@ -1,7 +1,8 @@
 const fs = require('fs');
 const bbox = require('geojson-bbox');
 const shapefile = require('shapefile-stream');
-const through = require('through2'); const { BirdLife } = require('../db/postgres/models');
+const through = require('through2'); 
+const { BirdLife } = require('../db/postgres/models');
 
 
 async function getBirdlifeBySpeciesId(req, res) {
@@ -23,7 +24,7 @@ async function getBirdlifeBySpeciesId(req, res) {
           bbox: extent
         }
       };
-
+      
       return resGeometry;
     });
 
