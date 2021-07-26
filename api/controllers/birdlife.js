@@ -41,6 +41,5 @@ async function addBirdlifeData(req, res) {
 }
 
 module.exports = {
-  getBirdlifeBySpeciesId,
   addBirdlifeData
 };
