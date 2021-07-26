@@ -1,63 +1,10 @@
-const fs = require('fs');
-const bbox = require('geojson-bbox');
 const shapefile = require('shapefile-stream');
-const through = require('through2'); 
+const through = require('through2');
 const { BirdLife } = require('../db/postgres/models');
 
-
-async function getBirdlifeBySpeciesId(req, res) {
-  try {
-    const { id } = req.params;
-    const polygons = await BirdLife.findAll({ where: { sis_id: id } });
-    if (!polygons) {
-      throw new Error('have filter');
-    }
-    const rows = polygons.map(p => {
-      const feature = {
-        type: 'Feature',
-        geometry: p.geometry
-      };
-      const extent = bbox(feature);
-      const resGeometry = {
-        ...p.geometry,
-        ...{
-          bbox: extent
-        }
-      };
-      
-      return resGeometry;
-    });
-
-    res.status(200).json({ rows });
-  } catch (err) {
-    res.status(err.statusCode || 500);
-    res.json({ error: err.message });
-  }
-}
-
-function getBirdlifeShape(req, res) {
-  const filePathShape = 'public/json/birdlife/index.json';
-  try {
-    const data = fs.readFileSync(filePathShape);
-    const poly = JSON.parse(data)[3];
-    const feature = {
-      type: 'Feature',
-      geometry: poly
-    };
-    const extent = bbox(feature);
-    const resGeometry = {
-      ...poly,
-      ...{
-        bbox: extent
-      }
-    };
-    res.json(resGeometry);
-  } catch (err) {
-    res.status(err.statusCode || 500);
-    res.json({ error: err.message });
-  }
-}
-
+/**
+ * Use it only once if you need to add data to Postgres DB
+ */
 async function addBirdlifeData(req, res) {
   try {
     let n = 0;
@@ -95,6 +42,5 @@ async function addBirdlifeData(req, res) {
 
 module.exports = {
   getBirdlifeBySpeciesId,
-  getBirdlifeShape,
   addBirdlifeData
 };

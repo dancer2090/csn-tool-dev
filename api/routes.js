@@ -5,7 +5,6 @@ const SpeciesCtrl = require('./controllers/species');
 const ThresholdCtrl = require('./controllers/threshold');
 const SearchCtrl = require('./controllers/search');
 const TablesCtrl = require('./controllers/tables');
-const BirdlifeCtrl = require('./controllers/birdlife');
 
 const router = Express.Router(); // eslint-disable-line new-cap
 
@@ -15,12 +14,6 @@ router.route('/locales/import-from-sheet').get(TablesCtrl.importFromSheet);
 
 // Carto data update
 router.route('/carto/populations').get(TablesCtrl.importTrendSizeMethods);
-
-// Birdlife
-// router.route('/birdlife/shape').get(BirdlifeCtrl.getBirdlifeShape);
-// router.route('/birdlife/test').get(BirdlifeCtrl.test);
-// router.route('/birdlife/add').get(BirdlifeCtrl.addBirdlifeData);
-// router.route('/birdlife/:id').get(BirdlifeCtrl.getBirdlifeBySpeciesId);
 
 // Countries
 router.route('/countries').get(CountriesCtrl.getCountries);

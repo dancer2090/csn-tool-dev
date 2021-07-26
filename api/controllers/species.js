@@ -503,7 +503,7 @@ function getSpeciesSeasons(req, res) {
   }
 }
 
-async function getSpeciesBirdlife (req, res) {
+async function getSpeciesBirdlife(req, res) {
   try {
     const { id } = req.params;
     const polygons = await BirdLife.findAll({ where: { sis_id: id } });
@@ -546,5 +546,5 @@ module.exports = {
   getPopulationsLookAlikeSpecies,
   getPopulationVulnerability,
   getTriggerCriticalSitesSuitability,
-  getSpeciesBirdlife,
+  getSpeciesBirdlife
 };
